@@ -12,6 +12,7 @@ import (
 type PlanetInterface interface {
 	Insert(models.Planets) (models.Planets, error)
 	Get(string) (models.Planets, error)
+	GetByName(string) (models.Planets, error)
 }
 
 type PlanetClient struct {
@@ -54,4 +55,16 @@ func (c *PlanetClient) Get(id string) (models.Planets, error) {
 	}
 
 	return planet, nil
+}
+
+func (c *PlanetClient) GetByName(name string) (models.Planets, error) {
+	var planet models.Planets
+
+	err := c.coll.FindOne(c.ctx, bson.M{"name": name}).Decode(planet)
+
+  if err != nil {
+		return planet, err
+	}
+
+	return planet, err
 }
