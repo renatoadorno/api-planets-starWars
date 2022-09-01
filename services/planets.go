@@ -1,0 +1,57 @@
+package services
+
+import (
+	"context"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"planets.api/models"
+)
+
+type PlanetInterface interface {
+	Insert(models.Planets) (models.Planets, error)
+	Get(string) (models.Planets, error)
+}
+
+type PlanetClient struct {
+	ctx  context.Context
+	coll *mongo.Collection
+}
+
+func NewClient(coll *mongo.Collection, ctx context.Context) *PlanetClient {
+	return &PlanetClient{
+		ctx:  ctx,
+		coll: coll,
+	}
+}
+
+func (c *PlanetClient) Insert(planet models.Planets) (models.Planets, error) {
+	planets := models.Planets{}
+
+	res, err := c.coll.InsertOne(c.ctx, planet)
+
+	if err != nil {
+		return planets, err
+	}
+
+	id := res.InsertedID.(primitive.ObjectID).Hex()
+	return c.Get(id)
+}
+
+func (c *PlanetClient) Get(id string) (models.Planets, error) {
+	planet := models.Planets{}
+
+	_id, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return planet, err
+	}
+
+	err = c.coll.FindOne(c.ctx, bson.M{"_id": _id}).Decode(&planet)
+
+	if err != nil {
+		return planet, err
+	}
+
+	return planet, nil
+}
