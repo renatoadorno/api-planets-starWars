@@ -26,6 +26,7 @@ func main() {
 		planets.POST("/", handlers.InsertPlanet(client))
 		planets.GET("/:id", handlers.GetPlanet(client))
 		planets.GET("/:name", handlers.GetPlanetByName(client))
+		planets.DELETE("/:name", handlers.Delete(client))
 	}
 
 	r.Run(":6000")

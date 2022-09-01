@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"errors"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -13,6 +14,7 @@ type PlanetInterface interface {
 	Insert(models.Planets) (models.Planets, error)
 	Get(string) (models.Planets, error)
 	GetByName(string) (models.Planets, error)
+  Delete(name string) error
 }
 
 type PlanetClient struct {
@@ -67,4 +69,13 @@ func (c *PlanetClient) GetByName(name string) (models.Planets, error) {
 	}
 
 	return planet, err
+}
+
+func (c *PlanetClient) Delete(name string) error {
+	filter := bson.D{primitive.E{Key: "name", Value: name}}
+	result, _ := c.coll.DeleteOne(c.ctx, filter)
+	if result.DeletedCount != 1 {
+		return errors.New("no planet found for delete")
+	}
+	return nil
 }
