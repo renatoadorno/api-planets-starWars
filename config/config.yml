@@ -1,6 +1,6 @@
 environment: dev
 token: OBIWANKENOBI
 mongo:
-  server: mongodb://mongo:27017
+  server: mongodb://localhost:27017
   database: Planets_DB
   collection: planets
