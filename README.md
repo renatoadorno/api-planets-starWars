@@ -30,7 +30,7 @@ Após executar o docker-compose é só iniciar o server com
 
 Para testar as rotas da API utilize o [Postman](https://www.postman.com/), [Insomnia](https://insomnia.rest/) ou qualquer outra ferramenta semelhante.
 
-A API por padrão ira rodar na **porta 6000**, também será necessario a Authorization com o **token:OBIWANKENOBI**
+A API por padrão ira rodar na **porta 6000**, também será necessario a Authorization com o **token: OBIWANKENOBI**
 
 Para adicionar novos planetas utilize a rota: **POST   /planets/**
 
@@ -45,5 +45,15 @@ Para adicionar novos planetas utilize a rota: **POST   /planets/**
 ```
 
 Para fazer uma Busca por nome utilize a rota: **GET /planets/get/:name**
+
 Para fazer uma Busca por id utilize a rota: **GET /planets/:id**
+
 Para deletar um planeta utilize a rota: **DELETE /planets/delete/:name**
+
+## Testes Unitarios
+
+Execute os testes unitarios com:
+
+```bash
+  go test ./... -v
+```
