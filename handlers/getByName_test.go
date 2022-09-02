@@ -33,11 +33,11 @@ func TestGetPlanetByName(t *testing.T) {
 			if test.expectedCode == 200 {
 				client.On("GetByName", test.name).Return(models.Planets{}, nil)
 			}
-			req, _ := http.NewRequest("GET", "/planets/"+test.name, nil)
+			req, _ := http.NewRequest("GET", "/planets/get/"+test.name, nil)
 			rec := httptest.NewRecorder()
 
 			r := gin.Default()
-			r.GET("/planets/:name", handlers.GetPlanetByName(client))
+			r.GET("/planets/get/:name", handlers.GetPlanetByName(client))
 			r.ServeHTTP(rec, req)
 
 			if test.expectedCode == 200 {
